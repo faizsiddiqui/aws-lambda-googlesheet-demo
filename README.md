@@ -1,4 +1,5 @@
-#### -- High Level Steps --
+### High Level Steps
+
 
 1. [Open Google Developer Console](https://console.developers.google.com/)
 
@@ -14,9 +15,9 @@
 
 7. Run build script, following will be output --
 
-  a. `aws-googlesheet-lambda-layer.zip` - Lambda Layer for googlesheet package
+    a. `aws-googlesheet-lambda-layer.zip` - Lambda Layer for googlesheet package
 
-  b. `aws-tag-fetch-lambda.zip` - Lambda function
+    b. `aws-tag-fetch-lambda.zip` - Lambda function
 
 ```
 ./build.sh

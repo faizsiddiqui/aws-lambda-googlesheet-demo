@@ -32,11 +32,15 @@
     a. IAM Role access requirement -
 
       - Service: CloudWatch Logs
+
         Limited: Write
+
         Resource: `arn:aws:logs:us-east-1:<aws-account-id>:log-group:/aws/lambda/aws-tag-fetch-lambda:*`
 
       - Service: EC2
+
         Limited: `Full: List, Read`
+
         Resource: `All resources`
 
     b. Environment Variables -

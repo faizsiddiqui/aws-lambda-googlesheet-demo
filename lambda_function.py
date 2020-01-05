@@ -1,4 +1,4 @@
-import googlesheet, boto3, os
+import googlesheet, boto3, os, json
 
 def aws_regions():
     ec2 = boto3.Session().client('ec2')
@@ -12,7 +12,10 @@ def get_account_id():
 def lambda_handler(event, context):
     account_id = get_account_id()
     regions = aws_regions()
-    instances = [['Tags_Name', 'Account', 'AZ', 'Instance', 'deployment', 'application', 'version', 'stack_version']]
+
+    instances = [['Tags_Name', 'Account', 'AZ', 'Instance']]
+    user_tags = list(filter(None, os.environ['CUSTOM_TAGS'].strip().replace(' ', '').split(',')))
+    instances[0].extend(user_tags)
 
     boto_session = boto3.Session()
     for region in regions:
@@ -23,16 +26,20 @@ def lambda_handler(event, context):
             for tag in instance.tags:
                 tags[tag['Key']] = tag['Value']
 
-            instances.append([
+            # Fixed tags
+            instance_tag = [
                 tags.get('Name', ''),
                 account_id,
                 instance.placement['AvailabilityZone'],
-                instance.id,
-                tags.get('deployment', ''),
-                tags.get('application', ''),
-                tags.get('version', ''),
-                tags.get('stack_version', '')
-            ])
+                instance.id
+            ]
+
+            # User defined tags
+            for tag in user_tags:
+                instance_tag.append(tags.get(tag, ''))
+
+            instances.append(instance_tag)
+
     sheet_result = googlesheet.update_sheet(os.environ['SHEET_ID'], os.environ['SHEET_NAME'], os.environ['SHEET_RANGE'], instances)
     return {
         'statusCode': 200,

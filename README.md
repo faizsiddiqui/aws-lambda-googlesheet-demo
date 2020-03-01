@@ -1,5 +1,9 @@
-### High Level Steps
+# aws-lambda-googlesheet-demo
 
+### Configuration
+
+
+#### Google authentication
 
 1. [Open Google Developer Console](https://console.developers.google.com/)
 
@@ -13,15 +17,20 @@
 
 6. Copy `client_email` from credential and share google sheet with this email
 
+
+#### Setup Lambda Function
+
 7. Run build script, following will be output --
 
     a. `aws-googlesheet-lambda-layer.zip` - Lambda Layer for googlesheet package
 
     b. `aws-tag-fetch-lambda.zip` - Lambda function
 
-```
-./build.sh
-```
+    ```bash
+pip install -r requirements.txt
+bash aws-googlesheet-lambda-layer/build.sh
+bash build.sh
+    ```
 
 8. [Create Lambda function](https://console.aws.amazon.com/lambda/home)
 
@@ -29,27 +38,15 @@
 
 10. Create Lambda function - `aws-tag-fetch-lambda`
 
-    a. IAM Role access requirement -
-
-      - Service: CloudWatch Logs
-
-        Limited: Write
-
-        Resource: `arn:aws:logs:us-east-1:<aws-account-id>:log-group:/aws/lambda/aws-tag-fetch-lambda:*`
-
-      - Service: EC2
-
-        Limited: `Full: List, Read`
-
-        Resource: `All resources`
+    a. IAM Role policy access requirement - [aws-policy.json](aws-policy.json)
 
     b. Environment Variables -
 
-      ```
-      SHEET_ID
-      SHEET_NAME
-      SHEET_RANGE
-      CUSTOM_TAGS
+      ```bash
+SHEET_ID
+SHEET_NAME
+SHEET_RANGE
+CUSTOM_TAGS
       ```
 
     c. Resource requirement -

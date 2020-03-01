@@ -1,0 +1,68 @@
+name: Build Lambda Artifacts
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Build aws-googlesheet-lambda-layer artifact
+      run: |
+        ./aws-googlesheet-lambda-layer/build.sh
+    - name: Build aws-tag-fetch-lambda function artifact
+      run: |
+        ./build.sh
+    - name: Shared Content
+        id: shared_content
+        run: |
+          GITHUB_SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-8)
+          EPOCH=$(date +'%s')
+          DATE=$(date)
+          echo "::set-output name=github_sha_short::$GITHUB_SHA_SHORT"
+          echo "::set-output name=epoch::$EPOCH"
+          echo "::set-output name=date::$DATE"
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.shared_content.outputs.epoch }}
+        release_name: Release - ${{ steps.shared_content.outputs.date }}
+        body: Release - ${{ steps.shared_content.outputs.github_sha_short }}
+        draft: false
+        prerelease: false
+    - name: Upload aws-googlesheet-lambda-layer.zip
+      id: upload-aws-googlesheet-lambda-layer
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./aws-googlesheet-lambda-layer/aws-googlesheet-lambda-layer.zip
+        asset_name: aws-googlesheet-lambda-layer.zip
+        asset_content_type: application/zip
+    - name: Upload aws-tag-fetch-lambda.zip
+      id: upload-aws-tag-fetch-lambda
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./aws-tag-fetch-lambda.zip
+        asset_name: aws-tag-fetch-lambda.zip
+        asset_content_type: application/zip

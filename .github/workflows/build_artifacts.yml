@@ -27,14 +27,14 @@ jobs:
       run: |
         ./build.sh
     - name: Shared Content
-        id: shared_content
-        run: |
-          GITHUB_SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-8)
-          EPOCH=$(date +'%s')
-          DATE=$(date)
-          echo "::set-output name=github_sha_short::$GITHUB_SHA_SHORT"
-          echo "::set-output name=epoch::$EPOCH"
-          echo "::set-output name=date::$DATE"
+      id: shared_content
+      run: |
+        GITHUB_SHA_SHORT=$(echo ${{ github.sha }} | cut -c1-8)
+        EPOCH=$(date +'%s')
+        DATE=$(date)
+        echo "::set-output name=github_sha_short::$GITHUB_SHA_SHORT"
+        echo "::set-output name=epoch::$EPOCH"
+        echo "::set-output name=date::$DATE"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

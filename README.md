@@ -1,7 +1,8 @@
 # aws-lambda-googlesheet-demo
 
-### Configuration
+![](https://github.com/actions/hello-world/workflows/Build%20Lambda%20Artifacts/badge.svg)
 
+### Configuration
 
 #### Google authentication
 

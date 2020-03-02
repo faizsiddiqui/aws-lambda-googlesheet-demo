@@ -1,6 +1,6 @@
 # aws-lambda-googlesheet-demo
 
-![](https://github.com/actions/hello-world/workflows/Build%20Lambda%20Artifacts/badge.svg)
+![Build Lambda Artifacts](https://github.com/faizsiddiqui/aws-lambda-googlesheet-demo/workflows/Build%20Lambda%20Artifacts/badge.svg)
 
 ### Configuration
 

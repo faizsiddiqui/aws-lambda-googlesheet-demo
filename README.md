@@ -28,9 +28,9 @@
     b. `aws-tag-fetch-lambda.zip` - Lambda function
 
     ```bash
-pip install -r requirements.txt
-bash aws-googlesheet-lambda-layer/build.sh
-bash build.sh
+    pip install -r requirements.txt
+    bash aws-googlesheet-lambda-layer/build.sh
+    bash build.sh
     ```
 
 8. [Create Lambda function](https://console.aws.amazon.com/lambda/home)
@@ -43,12 +43,12 @@ bash build.sh
 
     b. Environment Variables -
 
-      ```bash
-SHEET_ID
-SHEET_NAME
-SHEET_RANGE
-CUSTOM_TAGS
-      ```
+    ```bash
+    SHEET_ID
+    SHEET_NAME
+    SHEET_RANGE
+    CUSTOM_TAGS
+    ```
 
     c. Resource requirement -
        - Memory = 256 MB
